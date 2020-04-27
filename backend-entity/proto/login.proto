@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package entities;
+option go_package = "/entities";
+
+import "common.proto";
+
+service Greeter {
+    rpc Login (LoginRequest) returns (LoginResponse) {}
+}
+
+message LoginRequest {
+    Common common = 1;
+    string username = 2;
+    string password = 3;
+}
+
+message LoginResponse {
+    Error error = 1;
+    string token = 2;
+}

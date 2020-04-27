@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package entities;
+option go_package = "/entities";
+
+message UserData{
+    string Username = 1;
+    string Group = 2;
+    string Password = 3;
+}
