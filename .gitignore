@@ -65,5 +65,5 @@ buildNumber.properties
 workspace.xml
 misc.xml
 
-/backend-entity/entities/*
-/logs/*
+backend-entity/entities/*
+logs/*
