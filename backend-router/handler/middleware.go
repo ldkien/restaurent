@@ -1,9 +1,11 @@
 package handler
 
 import (
+	"bytes"
 	"encoding/json"
 	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/time/rate"
+	"io/ioutil"
 	"net"
 	"net/http"
 	"regexp"
@@ -15,6 +17,7 @@ import (
 	"sync"
 	"time"
 )
+
 type visitor struct {
 	limiter  *rate.Limiter
 	lastSeen time.Time
@@ -67,7 +70,7 @@ func AuthMiddleware(next http.Handler) http.Handler {
 		claims := &entity.Claims{}
 		var baseRequest entities.BaseRequest
 		err = json.NewDecoder(r.Body).Decode(&baseRequest)
-		if err != nil || baseRequest.Common == nil{
+		if err != nil || baseRequest.Common == nil {
 			response := entities.BaseResponse{
 				Error: backendError.GetError(backendError.UNAUTHENTICATED),
 			}
@@ -118,17 +121,16 @@ func AuthMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
-		common.User.Username = claims.Username;
-		common.User.Group = claims.Group;
+		common.User.Username = claims.Username
+		common.User.Group = claims.Group
 		body := []byte(app.ConvertToJson(&baseRequest))
-		r.Body.Read(body)
+		r.Body = ioutil.NopCloser(bytes.NewBuffer(body))
 		w.WriteHeader(http.StatusOK)
-		log.Logger.Info(baseRequest)
 		next.ServeHTTP(w, r)
 	})
 }
 
-func getVisitor(ip string) *rate.Limiter  {
+func getVisitor(ip string) *rate.Limiter {
 	mu.Lock()
 	defer mu.Unlock()
 
