@@ -2,7 +2,7 @@ package entity
 
 type GlobalConfig struct {
 	Cassandra   Cassandra `json:"cassandra"`
-	LoginClient string    `json:"loginClient"`
+	LoginClient []string  `json:"loginClient"`
 	LoginPort   string    `json:"loginPort"`
 }
 
