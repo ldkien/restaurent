@@ -12,8 +12,15 @@ import (
 )
 
 func Login(w http.ResponseWriter, r *http.Request) {
+	result := make(chan []byte)
+	go connectLoginModule(result)
+	w.Write(<-result)
+
+}
+
+func connectLoginModule(result chan []byte) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer client.Close()
+	defer close(result)
 	defer cancel()
 	response, err := client.Client.Login(ctx, &pb.LoginRequest{Username: "kienmit", Password: "63ce66a3f0fd389fb9124826d6cdff29"})
 	if err != nil {
@@ -25,6 +32,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data, _ := entity.Marshaler.MarshalToString(response)
-	dataResponse := []byte(data)
-	w.Write(dataResponse)
+
+	result <- []byte(data)
 }
