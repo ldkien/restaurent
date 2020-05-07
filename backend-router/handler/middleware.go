@@ -62,7 +62,7 @@ func AuthMiddleware(next http.Handler) http.Handler {
 
 		w.Header().Set("Content-Type", "application/json")
 		url := r.RequestURI
-		match, _ := regexp.MatchString("/public/*", url)
+		match, _ := regexp.MatchString(app.API_PUBLIC+"*", url)
 		if match {
 			next.ServeHTTP(w, r)
 			return
