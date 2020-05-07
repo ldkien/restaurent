@@ -12,7 +12,8 @@ import (
 )
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer client.Close()
 	defer cancel()
 	response, err := client.Client.Login(ctx, &pb.LoginRequest{Username: "kienmit", Password: "63ce66a3f0fd389fb9124826d6cdff29"})
 	if err != nil {
@@ -23,7 +24,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	data,_ := entity.Marshaler.MarshalToString(response)
+	data, _ := entity.Marshaler.MarshalToString(response)
 	dataResponse := []byte(data)
 	w.Write(dataResponse)
 }

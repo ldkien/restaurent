@@ -20,5 +20,7 @@ func init() {
 }
 
 func Close() {
-	conn.Close()
+	if conn != nil {
+		conn.Close()
+	}
 }

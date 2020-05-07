@@ -12,7 +12,6 @@ import (
 	"time"
 )
 
-
 func Login(in *pb.LoginRequest) (*pb.LoginResponse, error) {
 	response := getUserData(in)
 
@@ -28,14 +27,14 @@ func getUserData(request *pb.LoginRequest) *pb.LoginResponse {
 	claims := &backendEntity.Claims{}
 	for iterator.MapScan(m) {
 		found = true
-		claims.Username = m["username"].(string)
-		claims.Group = m["group"].(string)
+		claims.Username = app.ConvertInterfaceToString(m["username"])
+		claims.Group = app.ConvertInterfaceToString(m["group"])
 	}
 	var errorResponse *pb.Error
 	var token string
 	if !found {
 		errorResponse = backendError.GetError(backendError.LOGIN_ERROR)
-	}else {
+	} else {
 		errorResponse = backendError.GetError(backendError.SUCCESS)
 		token = createJwtToken(claims)
 		if len(token) == 0 {
@@ -49,7 +48,7 @@ func getUserData(request *pb.LoginRequest) *pb.LoginResponse {
 	}
 }
 
-func createJwtToken(claims *backendEntity.Claims) string  {
+func createJwtToken(claims *backendEntity.Claims) string {
 	expirationTime := time.Now().Add(60 * time.Minute)
 	claims.ExpiresAt = expirationTime.Unix()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

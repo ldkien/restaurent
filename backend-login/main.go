@@ -25,10 +25,10 @@ func main() {
 	}
 	s := grpc.NewServer()
 	pb.RegisterGreeterServer(s, &server{})
+	log.Logger.Info("Start module login port: " + app.GlobalConfig.LoginPort)
 	if err := s.Serve(lis); err != nil {
 		log.Logger.Error("failed to serve: ", err)
 	}
-	log.Logger.Info("Start module login port: " + app.GlobalConfig.LoginPort)
 }
 
 func (s *server) Login(ctx context.Context, in *pb.LoginRequest) (*pb.LoginResponse, error) {

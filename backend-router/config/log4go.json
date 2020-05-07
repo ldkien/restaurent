@@ -7,7 +7,7 @@
     {
     "enable": true,
     "level": "DEBUG",
-    "filename":"/Users/ledoankien/Go-Projects/src/restaurant/logs/router.log",
+    "filename":"../restaurant/logs/router.log",
     "category": "SERVER",
     "pattern": "[%D %T] [%C] [%L] (%S) %M"
     },
