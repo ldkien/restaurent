@@ -7,8 +7,14 @@ import "common.proto";
 
 service Greeter {
     rpc Login (LoginRequest) returns (LoginResponse) {}
+    rpc Register (RegisterRequest) returns (RegisterResponse) {}
 }
 
+enum SEX {
+    UNKNOWN = 0;
+    MALE = 1;
+    FEMALE = 2;
+}
 message LoginRequest {
     Common common = 1;
     string username = 2;
@@ -16,6 +22,20 @@ message LoginRequest {
 }
 
 message LoginResponse {
+    Error error = 1;
+    string token = 2;
+}
+
+message RegisterRequest {
+    Common common = 1;
+    string username = 2;
+    string password = 3;
+    string repeatPass = 4;
+    string fullName = 5;
+    SEX sex = 6;
+}
+
+message RegisterResponse {
     Error error = 1;
     string token = 2;
 }
