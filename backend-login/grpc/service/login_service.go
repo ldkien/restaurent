@@ -1,15 +1,14 @@
 package service
 
 import (
-	"github.com/dgrijalva/jwt-go"
 	"github.com/gocql/gocql"
 	"restaurant/backend-base/app"
 	"restaurant/backend-base/database/cassandra"
 	backendEntity "restaurant/backend-base/entity"
 	backendError "restaurant/backend-base/error"
-	"restaurant/backend-base/logger"
 	pb "restaurant/backend-entity/entities"
-	"time"
+	"restaurant/backend-login/module"
+	"strings"
 )
 
 func Login(in *pb.LoginRequest) (*pb.LoginResponse, error) {
@@ -21,7 +20,7 @@ func Login(in *pb.LoginRequest) (*pb.LoginResponse, error) {
 func getUserData(request *pb.LoginRequest) *pb.LoginResponse {
 	query := "SELECT * FROM user_data where username = ? and password = ? ALLOW FILTERING"
 	iterator := cassandra.Session.
-		Query(query, request.Username, request.Password).Consistency(gocql.One).Iter()
+		Query(query, strings.ToLower(request.Username), request.Password).Consistency(gocql.One).Iter()
 	m := map[string]interface{}{}
 	var found = false
 	claims := &backendEntity.Claims{}
@@ -36,7 +35,7 @@ func getUserData(request *pb.LoginRequest) *pb.LoginResponse {
 		errorResponse = backendError.GetError(backendError.LOGIN_ERROR)
 	} else {
 		errorResponse = backendError.GetError(backendError.SUCCESS)
-		token = createJwtToken(claims)
+		token = module.CreateJwtToken(claims)
 		if len(token) == 0 {
 			errorResponse = backendError.GetError(backendError.SYSTEM_ERROR)
 		}
@@ -46,16 +45,4 @@ func getUserData(request *pb.LoginRequest) *pb.LoginResponse {
 		Error: errorResponse,
 		Token: token,
 	}
-}
-
-func createJwtToken(claims *backendEntity.Claims) string {
-	expirationTime := time.Now().Add(60 * time.Minute)
-	claims.ExpiresAt = expirationTime.Unix()
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString(app.JWT_KEY)
-	if err != nil {
-		logger.Logger.Error(err)
-		tokenString = ""
-	}
-	return tokenString
 }

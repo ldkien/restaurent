@@ -2,9 +2,12 @@ package app
 
 import (
 	"github.com/golang/protobuf/proto"
+	"regexp"
 	"restaurant/backend-base/entity"
 	"restaurant/backend-base/logger"
 )
+
+var IsValidUsername = regexp.MustCompile("([a-zA-Z0-9](_|-| )[a-zA-Z0-9])*").MatchString
 
 func ConvertToJson(m proto.Message) string {
 	data, err := entity.Marshaler.MarshalToString(m)
@@ -20,4 +23,13 @@ func ConvertInterfaceToString(data interface{}) string {
 		return ""
 	}
 	return data.(string)
+}
+
+func IsLetter(s string) bool {
+	for _, r := range s {
+		if r != ' ' && (r < 'a' || r > 'z') && (r < 'A' || r > 'Z') {
+			return false
+		}
+	}
+	return true
 }

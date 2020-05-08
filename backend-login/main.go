@@ -34,3 +34,7 @@ func main() {
 func (s *server) Login(ctx context.Context, in *pb.LoginRequest) (*pb.LoginResponse, error) {
 	return service.Login(in)
 }
+
+func (s *server) Register(ctx context.Context, in *pb.RegisterRequest) (*pb.RegisterResponse, error) {
+	return service.Register(in)
+}
