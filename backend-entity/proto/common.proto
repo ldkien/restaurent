@@ -23,11 +23,8 @@ message Common {
 
 message BaseResponse {
     Error error = 1;
-    google.protobuf.Any instrument = 3;
-}
-
-message BaseRequest{
-    Common common = 1;
     google.protobuf.Any data = 3;
 }
+
+
 

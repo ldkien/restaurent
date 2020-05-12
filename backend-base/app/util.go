@@ -1,6 +1,7 @@
 package app
 
 import (
+	"encoding/json"
 	"github.com/golang/protobuf/proto"
 	"regexp"
 	"restaurant/backend-base/entity"
@@ -14,6 +15,14 @@ func ConvertToJson(m proto.Message) string {
 	if err != nil {
 		logger.Logger.Error(err)
 		return "{}"
+	}
+	return data
+}
+func ConvertBaseRequestToJson(m entity.BaseRequest) []byte {
+	data, err := json.Marshal(m)
+	if err != nil {
+		logger.Logger.Error(err)
+		return nil
 	}
 	return data
 }

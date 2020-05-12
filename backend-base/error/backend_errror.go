@@ -13,6 +13,7 @@ const (
 	INVALID_USERNAME = 6
 	EXIST_USERNAME   = 7
 	DB_ERROR         = 8
+	DB_NO_RECORD     = 9
 )
 
 var ErrorDes = map[int32]string{
@@ -26,10 +27,9 @@ var ErrorDes = map[int32]string{
 	6:  "Tên đăng nhập không hợp lệ",
 	7:  "Tên đăng nhập đã tồn tại. Xin vui lòng thử lại",
 	8:  "Đã có lỗi trong quá trình xử lý. Xin vui lòng thử lại",
-	50: "L",
+	9:  "Dữ liệu không tồn tại. Vui lòng thử lại",
 	40: "XL",
 	10: "X",
-	9:  "IX",
 }
 
 func GetError(errorCode int32) *pb.Error {

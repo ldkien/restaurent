@@ -68,7 +68,7 @@ func AuthMiddleware(next http.Handler) http.Handler {
 			return
 		}
 		claims := &entity.Claims{}
-		var baseRequest entities.BaseRequest
+		var baseRequest entity.BaseRequest
 		err = json.NewDecoder(r.Body).Decode(&baseRequest)
 		if err != nil || baseRequest.Common == nil {
 			response := entities.BaseResponse{
@@ -123,7 +123,7 @@ func AuthMiddleware(next http.Handler) http.Handler {
 
 		common.User.Username = claims.Username
 		common.User.Group = claims.Group
-		body := []byte(app.ConvertToJson(&baseRequest))
+		body := app.ConvertBaseRequestToJson(baseRequest)
 		r.Body = ioutil.NopCloser(bytes.NewBuffer(body))
 		w.WriteHeader(http.StatusOK)
 		next.ServeHTTP(w, r)

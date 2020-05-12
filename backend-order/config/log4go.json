@@ -1,0 +1,34 @@
+{
+  "console": {
+    "enable": true,
+    "level": "FINE"
+  },
+  "files": [
+    {
+    "enable": true,
+    "level": "DEBUG",
+    "filename":"../restaurant/logs/order.log",
+    "category": "SERVER",
+    "pattern": "[%D %T] [%C] [%L] (%S) %M"
+    },
+    {
+    "enable": false,
+    "level": "DEBUG",
+    "filename":"rotate_order.log",
+    "category": "RouterRotate",
+    "pattern": "[%D %T] [%C] [%L] (%S) %M",
+    "rotate": true,
+    "maxsize": "500M",
+    "maxlines": "10K",
+    "daily": true,
+    "sanitize": true
+  }],
+  "sockets": [{
+    "enable": false,
+    "level": "DEBUG",
+    "category": "OrderSocket",
+    "pattern": "[%D %T] [%C] [%L] (%S) %M",
+    "addr": "127.0.0.1:12124",
+    "protocol":"udp"
+  }]
+}

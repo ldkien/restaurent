@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package entities;
+option go_package = "/entities";
+
+message Table{
+  string tableId = 1;
+  string tableName = 2;
+  string desc = 3;
+}

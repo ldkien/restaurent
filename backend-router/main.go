@@ -14,7 +14,7 @@ func main() {
 	rtr.Use(handler.AuthMiddleware)
 	rtr.HandleFunc(app.API_LOGIN, handler.Login).Methods("POST")
 	rtr.HandleFunc(app.API_REGISTER, handler.Register).Methods("POST")
-	rtr.HandleFunc("/welcome", handler.Welcome)
+	rtr.HandleFunc(app.API_ORDER, handler.Order).Methods("POST")
 
 	http.Handle("/", rtr)
 	log.Logger.Info("Start service router ....")

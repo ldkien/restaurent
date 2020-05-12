@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package entities;
+option go_package = "/entities";
+
+import "common.proto";
+
+service OrderService {
+  rpc Order (OrderRequest) returns (BaseResponse) {}
+}
+
+enum STATUS_DELIVERY {
+  UNKNOWN_STATUS_DELIVERY = 0;
+  RECEIVED = 1;
+  PREPARING = 2;
+  DELIVERING = 3;
+  FINISH = 4;
+  REJECT = 5;
+}
+
+message OrderRequest {
+  string tableId = 1;
+  string dishId = 2;
+  string note = 3;
+  sint32 num = 4;
+}
+
+message OrderResponse {
+  string orderId = 1;
+  string tableId = 2;
+  string tableName = 3;
+  string tableDesc = 4;
+  string dishId = 5;
+  string dishName = 6;
+  string dishNote = 7;
+  string note = 8;
+  STATUS_DELIVERY status = 9;
+  sint64 timeDelivery = 10;
+}
+
+

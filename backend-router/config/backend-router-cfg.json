@@ -1,3 +1,4 @@
 {
-  "loginClient": ["localhost:8001"]
+  "loginClient": ["localhost:8001"],
+  "orderClient": ["localhost:8002"]
 }
