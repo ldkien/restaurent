@@ -3,6 +3,8 @@ package app
 import (
 	"encoding/json"
 	"github.com/golang/protobuf/proto"
+	"github.com/golang/protobuf/ptypes"
+	"google.golang.org/protobuf/types/known/anypb"
 	"regexp"
 	"restaurant/backend-base/entity"
 	"restaurant/backend-base/logger"
@@ -41,4 +43,22 @@ func IsLetter(s string) bool {
 		}
 	}
 	return true
+}
+
+func ConvertDataAny(m proto.Message) *anypb.Any {
+	data, err := ptypes.MarshalAny(m)
+	if err != nil {
+		return nil
+	}
+
+	return data
+}
+
+func ConvertObjectToStringJson(m interface{}) string {
+	data, err := json.Marshal(m)
+	if err != nil {
+		logger.Logger.Error(err)
+		return "{}"
+	}
+	return string(data)
 }

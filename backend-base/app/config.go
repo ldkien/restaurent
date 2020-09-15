@@ -11,9 +11,9 @@ import (
 var GlobalConfig entity.GlobalConfig
 
 func init() {
-	fileConfig := os.Getenv(CONFIG_PATH)
+	fileConfig := os.Getenv(ConfigPath)
 	jsonFile, err := os.Open(fileConfig)
-	if err != nil{
+	if err != nil {
 		log.Logger.Error(err)
 		panic(err)
 	}

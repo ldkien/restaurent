@@ -46,6 +46,7 @@ func cleanupVisitors() {
 
 func AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
 		//rate limit
 		ip, _, err := net.SplitHostPort(r.RemoteAddr)
 		if err != nil {
@@ -62,15 +63,19 @@ func AuthMiddleware(next http.Handler) http.Handler {
 
 		w.Header().Set("Content-Type", "application/json")
 		url := r.RequestURI
-		match, _ := regexp.MatchString(app.API_PUBLIC+"*", url)
+		match, _ := regexp.MatchString(app.ApiPublic+"*", url)
 		if match {
 			next.ServeHTTP(w, r)
 			return
 		}
+
+		printRequest(r)
+
 		claims := &entity.Claims{}
 		var baseRequest entity.BaseRequest
 		err = json.NewDecoder(r.Body).Decode(&baseRequest)
 		if err != nil || baseRequest.Common == nil {
+			log.Logger.Error(err.Error())
 			response := entities.BaseResponse{
 				Error: backendError.GetError(backendError.UNAUTHENTICATED),
 			}
@@ -125,7 +130,7 @@ func AuthMiddleware(next http.Handler) http.Handler {
 		common.User.Group = claims.Group
 		body := app.ConvertBaseRequestToJson(baseRequest)
 		r.Body = ioutil.NopCloser(bytes.NewBuffer(body))
-		w.WriteHeader(http.StatusOK)
+		//w.WriteHeader(http.StatusOK)
 		next.ServeHTTP(w, r)
 	})
 }
@@ -143,4 +148,15 @@ func getVisitor(ip string) *rate.Limiter {
 
 	v.lastSeen = time.Now()
 	return v.limiter
+}
+
+func printRequest(r *http.Request) {
+	rqBody, err := ioutil.ReadAll(r.Body)
+
+	if err != nil {
+		log.Logger.Error("Error reading body: %v", err)
+		return
+	}
+	log.Logger.Info("Request data: %s", rqBody)
+	r.Body = ioutil.NopCloser(bytes.NewReader(rqBody))
 }

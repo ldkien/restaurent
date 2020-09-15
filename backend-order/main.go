@@ -21,7 +21,7 @@ func main() {
 	}
 	s := grpc.NewServer()
 	pb.RegisterOrderServiceServer(s, &server{})
-	log.Logger.Info("Start module order port: " + app.GlobalConfig.LoginPort)
+	log.Logger.Info("Start module order port: " + app.GlobalConfig.OrderPort)
 	if err := s.Serve(lis); err != nil {
 		log.Logger.Error("failed to serve: ", err)
 	}

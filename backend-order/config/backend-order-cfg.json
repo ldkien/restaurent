@@ -3,7 +3,7 @@
     "port": 9042,
     "host": "localhost",
     "keyspace": "backend",
-    "user": "cassandra",
+    "user": "root",
     "password": "cassandra"
   },
   "orderPort" : ":8002"

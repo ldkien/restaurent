@@ -4,9 +4,11 @@ package entities;
 option go_package = "/entities";
 
 import "common.proto";
+import "model.proto";
 
 service OrderService {
   rpc Order (OrderRequest) returns (BaseResponse) {}
+  rpc UpdateOrder (OrderRequest) returns (BaseResponse) {}
 }
 
 enum STATUS_DELIVERY {
@@ -19,23 +21,21 @@ enum STATUS_DELIVERY {
 }
 
 message OrderRequest {
-  string tableId = 1;
-  string dishId = 2;
-  string note = 3;
-  sint32 num = 4;
+  string id = 1;
+  Table table = 2;
+  repeated Dish dishes = 3;
+  string note = 4;
+  Common common = 5;
+  STATUS_DELIVERY status = 6;
 }
 
 message OrderResponse {
-  string orderId = 1;
-  string tableId = 2;
-  string tableName = 3;
-  string tableDesc = 4;
-  string dishId = 5;
-  string dishName = 6;
-  string dishNote = 7;
-  string note = 8;
-  STATUS_DELIVERY status = 9;
-  sint64 timeDelivery = 10;
+  string id = 1;
+  Table table = 2;
+  repeated Dish dishes = 3;
+  string note = 4;
+  STATUS_DELIVERY status = 5;
+  sint64 timeDelivery = 6;
 }
 
 

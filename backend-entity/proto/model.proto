@@ -6,5 +6,12 @@ option go_package = "/entities";
 message Table{
   string tableId = 1;
   string tableName = 2;
-  string desc = 3;
+  string tableDesc = 3;
+}
+
+message Dish {
+  string dishId = 1;
+  string dishName = 2;
+  string dishNote = 3;
+  sint32 quantity = 4;
 }

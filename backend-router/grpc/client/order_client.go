@@ -12,7 +12,7 @@ var ClientOrder pb.OrderServiceClient
 var connOrder *grpc.ClientConn
 
 func init() {
-	connOrder, err := grpc.Dial("dummy", grpc.WithInsecure(), grpc.WithBalancer(grpc.RoundRobin(entity.NewPseudoResolver(app.GlobalConfig.LoginClient))))
+	connOrder, err := grpc.Dial("dummy", grpc.WithInsecure(), grpc.WithBalancer(grpc.RoundRobin(entity.NewPseudoResolver(app.GlobalConfig.OrderClient))))
 	if err != nil {
 		logger.Logger.Error("did not connect order service: ", err)
 	}

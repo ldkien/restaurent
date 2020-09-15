@@ -12,9 +12,10 @@ func main() {
 	rtr := mux.NewRouter()
 
 	rtr.Use(handler.AuthMiddleware)
-	rtr.HandleFunc(app.API_LOGIN, handler.Login).Methods("POST")
-	rtr.HandleFunc(app.API_REGISTER, handler.Register).Methods("POST")
-	rtr.HandleFunc(app.API_ORDER, handler.Order).Methods("POST")
+	rtr.HandleFunc(app.ApiLogin, handler.Login).Methods("POST")
+	rtr.HandleFunc(app.ApiRegister, handler.Register).Methods("POST")
+	rtr.HandleFunc(app.ApiOrder, handler.CreateOrder).Methods("POST")
+	rtr.HandleFunc(app.ApiOrder, handler.UpdateOrder).Methods("PUT")
 
 	http.Handle("/", rtr)
 	log.Logger.Info("Start service router ....")
